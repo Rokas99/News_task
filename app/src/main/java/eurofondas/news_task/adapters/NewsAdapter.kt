@@ -10,7 +10,7 @@ import eurofondas.news_task.models.Article
 
 class NewsAdapter(private val items: List<Article>) : RecyclerView.Adapter<NewsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_main, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.single_article, parent, false)
         return NewsViewHolder(view)
     }
 
