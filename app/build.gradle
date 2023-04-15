@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "eurofondas.news_task"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -52,6 +52,7 @@ dependencies {
 
     //Room
     implementation 'androidx.room:room-runtime:2.5.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     kapt 'androidx.room:room-compiler:2.5.1'
 
     //Coroutines for Room
