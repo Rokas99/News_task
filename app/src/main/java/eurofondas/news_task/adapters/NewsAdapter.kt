@@ -14,9 +14,10 @@ import eurofondas.news_task.R
 import eurofondas.news_task.activities.DetailsActivity
 import eurofondas.news_task.logic.Logic
 import eurofondas.news_task.models.Article
+import eurofondas.news_task.viewmodels.NewsViewModel
 
 
-class NewsAdapter(private val items: List<Article>, private val activity: Activity) :
+class NewsAdapter(private val items: List<Article>, private val activity: Activity,  private val clickable: Boolean ) :
     RecyclerView.Adapter<NewsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val view =
@@ -36,10 +37,13 @@ class NewsAdapter(private val items: List<Article>, private val activity: Activi
             holder.image.load(R.drawable.news)
         }
 
-        holder.element.setOnClickListener() {
-            val intent = Intent(activity, DetailsActivity::class.java)
-            intent.putExtra("article", item)
-            activity.startActivity(intent)
+        if(clickable)
+        {
+            holder.element.setOnClickListener() {
+                val intent = Intent(activity, DetailsActivity::class.java)
+                intent.putExtra("article", item)
+                activity.startActivity(intent)
+            }
         }
     }
 

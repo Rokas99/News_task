@@ -1,51 +1,43 @@
 package eurofondas.news_task.activities
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.InvalidationTracker
 import eurofondas.news_task.R
-import eurofondas.news_task.adapters.NewsAdapter
-import eurofondas.news_task.decoration.SpaceItemDecoration
-import eurofondas.news_task.models.GetNewsResponse
-import eurofondas.news_task.retrofit.Connection
-import eurofondas.news_task.retrofit.NewsService
-import eurofondas.news_task.viewmodels.NewsViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import eurofondas.news_task.fragments.HomeFragment
+import eurofondas.news_task.fragments.SavedFragment
+import nl.joery.animatedbottombar.AnimatedBottomBar
 
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val mainActivity = this
-
         setContentView(R.layout.activity_main)
 
-        val recyclerView : RecyclerView = findViewById(R.id.activity_main_recyclerView)
+        val fragmentManager = supportFragmentManager
 
-        val linearLayoutManager = LinearLayoutManager(this)
-        linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        recyclerView.layoutManager = linearLayoutManager
-        recyclerView.addItemDecoration(SpaceItemDecoration(30, 10))
+        fragmentManager.beginTransaction()
+            .replace(R.id.activity_main_fragment_container, HomeFragment(), "HomeFragment").commit()
 
-        val newsViewModel = NewsViewModel()
+        val bottomBar = findViewById<AnimatedBottomBar>(R.id.activity_main_bottom_bar)
 
-        newsViewModel.getNews()
-
-        newsViewModel.getNewsResult().observe(this
-        ) {
-            if(it != null)
-            {
-                val articles = it.articles
-                val adapter = NewsAdapter(articles, mainActivity)
-                recyclerView.adapter = adapter
+        bottomBar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
+            override fun onTabSelected(
+                lastIndex: Int,
+                lastTab: AnimatedBottomBar.Tab?,
+                newIndex: Int,
+                newTab: AnimatedBottomBar.Tab
+            ) {
+                if (newIndex == 0) {
+                    fragmentManager.beginTransaction()
+                        .replace(R.id.activity_main_fragment_container, HomeFragment(), "HomeFragment").commit()
+                }
+                else if (newIndex == 1) {
+                    fragmentManager.beginTransaction()
+                        .replace(R.id.activity_main_fragment_container, SavedFragment(), "SavedFragment").commit()
+                }
             }
-        }
+
+        })
     }
 }

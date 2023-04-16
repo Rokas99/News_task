@@ -8,11 +8,17 @@ import android.os.Parcelable
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import coil.load
 import eurofondas.news_task.R
+import eurofondas.news_task.db.ArticleDatabase
 import eurofondas.news_task.logic.Logic
 import eurofondas.news_task.models.Article
+import eurofondas.news_task.viewmodels.ArticleViewModelFactory
+import eurofondas.news_task.viewmodels.NewsViewModel
+import java.time.Duration
 
 
 class DetailsActivity : AppCompatActivity() {
@@ -30,10 +36,23 @@ class DetailsActivity : AppCompatActivity() {
         val contentView: TextView = findViewById(R.id.activity_details_content)
         val imageView: ImageView = findViewById(R.id.activity_details_image)
         val back: ImageView = findViewById(R.id.activity_details_back)
+        val save: ImageView = findViewById(R.id.activity_details_save)
         val read_online_button: Button = findViewById(R.id.activity_details_read_online)
 
         back.setOnClickListener() {
             finish()
+        }
+
+        val articleDatabase = ArticleDatabase.getInstance(this)
+        val viewModelFactory = ArticleViewModelFactory(articleDatabase)
+        val newsViewModel = ViewModelProvider(this, viewModelFactory)[NewsViewModel::class.java]
+
+        save.setOnClickListener() {
+            if (article != null) {
+                newsViewModel.insertArticle(article)
+
+                Toast.makeText(this, "Article was successfully added", Toast.LENGTH_SHORT).show()
+            }
         }
 
         if (article != null) {

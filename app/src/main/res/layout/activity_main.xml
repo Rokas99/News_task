@@ -7,9 +7,26 @@
     tools:context=".activities.MainActivity"
     android:background="@color/light_gray">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_main_recyclerView"
+    <FrameLayout
+        android:id="@+id/activity_main_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/activity_main_bottom_bar">
+
+    </FrameLayout>
+
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/activity_main_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        app:abb_indicatorAppearance="round"
+        app:abb_indicatorHeight="4dp"
+        app:abb_indicatorMargin="16dp"
+        app:abb_selectedIndex="0"
+        app:abb_selectedTabType="text"
+        app:abb_tabs="@menu/tabs"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
