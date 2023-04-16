@@ -22,6 +22,9 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val mainActivity = this
+
         setContentView(R.layout.activity_main)
 
         val recyclerView : RecyclerView = findViewById(R.id.activity_main_recyclerView)
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             if(it != null)
             {
                 val articles = it.articles
-                val adapter = NewsAdapter(articles)
+                val adapter = NewsAdapter(articles, mainActivity)
                 recyclerView.adapter = adapter
             }
         }

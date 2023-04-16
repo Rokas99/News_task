@@ -1,22 +1,23 @@
 package eurofondas.news_task.adapters
 
-import android.util.Log
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import coil.load
 import eurofondas.news_task.R
+import eurofondas.news_task.activities.DetailsActivity
+import eurofondas.news_task.logic.Logic
 import eurofondas.news_task.models.Article
-import java.text.DateFormat
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
 
-class NewsAdapter(private val items: List<Article>) : RecyclerView.Adapter<NewsViewHolder>() {
+
+class NewsAdapter(private val items: List<Article>, private val activity: Activity) :
+    RecyclerView.Adapter<NewsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.single_article, parent, false)
@@ -27,16 +28,19 @@ class NewsAdapter(private val items: List<Article>) : RecyclerView.Adapter<NewsV
         val item = items[position]
         holder.title.text = item.title
 
-        val dateString = item.publishedAt
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-        val date = dateFormat.parse(dateString)
+        holder.date.text = Logic().formatDate(item.publishedAt)
 
-        val dateFormatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault())
-        val formattedDate = dateFormatter.format(date)
+        if (item.urlToImage != "")
+            holder.image.load(item.urlToImage)
+        else {
+            holder.image.load(R.drawable.news)
+        }
 
-        holder.date.text = formattedDate
-
-        holder.image.load(item.urlToImage)
+        holder.element.setOnClickListener() {
+            val intent = Intent(activity, DetailsActivity::class.java)
+            intent.putExtra("article", item)
+            activity.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -48,4 +52,5 @@ class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val title: TextView = itemView.findViewById(R.id.single_article_title)
     val date: TextView = itemView.findViewById(R.id.single_article_date)
     val image: ImageView = itemView.findViewById(R.id.single_article_image)
+    val element: ConstraintLayout = itemView.findViewById(R.id.single_article_element)
 }

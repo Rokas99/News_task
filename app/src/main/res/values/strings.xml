@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">News_task</string>
+    <string name="read_full_article">Read full article online</string>
 </resources>
