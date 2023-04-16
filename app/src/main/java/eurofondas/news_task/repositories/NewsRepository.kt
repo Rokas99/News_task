@@ -9,35 +9,23 @@ import retrofit2.Response
 
 class NewsRepository {
 
-    fun getNews(newsResponse : INewsResponse)
-    {
-        val newsService : NewsService? = Connection.getRetrofit()?.create(NewsService::class.java)
+    suspend fun getNews(newsResponse: INewsResponse) {
+        val newsService: NewsService? = Connection.getRetrofit()?.create(NewsService::class.java)
 
-        newsService?.getNews()?.enqueue(object : Callback<GetNewsResponse> {
-            override fun onResponse(
-                call: Call<GetNewsResponse>,
-                response: Response<GetNewsResponse>
-            ) {
-                if(response.isSuccessful)
-                {
-                    newsResponse.OnResponse(response.body())
-                }
-                else
-                {
-                    newsResponse.OnFailure(Throwable(response.message()))
-                }
-            }
+        val request = newsService?.getNews()
 
-            override fun onFailure(call: Call<GetNewsResponse>, t: Throwable) {
-                newsResponse.OnFailure(t)
-            }
-        })
+        if (request != null) {
+            if (request.isSuccessful)
+                newsResponse.OnResponse(request.body())
+            else
+                newsResponse.OnFailure(Throwable(request.message()))
+        }
 
+        newsResponse.OnFailure(Throwable(request?.message()))
     }
 
-    interface INewsResponse
-    {
-        fun OnResponse(getNewsResponse : GetNewsResponse?);
+    interface INewsResponse {
+        fun OnResponse(getNewsResponse: GetNewsResponse?);
         fun OnFailure(t: Throwable);
     }
 }

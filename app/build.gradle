@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
     id 'org.jetbrains.kotlin.plugin.parcelize'
 }
 
@@ -48,6 +47,7 @@ dependencies {
 
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
 
     //Coil
     implementation 'io.coil-kt:coil:2.3.0'
@@ -59,11 +59,6 @@ dependencies {
 
     //Coroutines for Room
     implementation 'androidx.room:room-ktx:2.5.1'
-
-    //Dagger Hilt
-    implementation 'com.google.dagger:hilt-android:2.44'
-    kapt 'com.google.dagger:hilt-android-compiler:2.44'
-    kapt 'com.google.dagger:hilt-compiler:2.44'
 
     //Moshi
     implementation 'com.squareup.moshi:moshi:1.14.0'
