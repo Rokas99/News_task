@@ -1,31 +1,47 @@
 package eurofondas.news_task.repositories
 
+import android.util.Log
 import eurofondas.news_task.models.GetNewsResponse
 import eurofondas.news_task.retrofit.Connection
 import eurofondas.news_task.retrofit.NewsService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import java.io.IOException
 
 class NewsRepository {
 
     suspend fun getNews(newsResponse: INewsResponse) {
-        val newsService: NewsService? = Connection.getRetrofit()?.create(NewsService::class.java)
+        val newsService: NewsService?
 
-        val request = newsService?.getNews()
-
-        if (request != null) {
-            if (request.isSuccessful)
-                newsResponse.OnResponse(request.body())
-            else
-                newsResponse.OnFailure(Throwable(request.message()))
+        try {
+            newsService = Connection.getRetrofit()?.create(NewsService::class.java)
+        } catch (exception: IOException) {
+            Log.d("FAILED", exception.message.toString())
+            newsResponse.onFailure(Throwable("Connection error"))
+            return
         }
 
-        newsResponse.OnFailure(Throwable(request?.message()))
+        val request = try {
+            newsService?.getNews()
+        } catch (exception: IOException) {
+            Log.d("FAILED", exception.message.toString())
+            newsResponse.onFailure(Throwable("Connection error"))
+            return
+        }
+
+        if (request != null) {
+            if (request.isSuccessful) {
+                newsResponse.onResponse(request.body())
+            } else {
+                Log.d("FAILED", request.message() ?: "")
+                newsResponse.onFailure(Throwable(request.message()))
+            }
+        } else {
+            newsResponse.onFailure(Throwable("Request is empty"))
+        }
     }
 
+
     interface INewsResponse {
-        fun OnResponse(getNewsResponse: GetNewsResponse?);
-        fun OnFailure(t: Throwable);
+        fun onResponse(getNewsResponse: GetNewsResponse?);
+        fun onFailure(t: Throwable);
     }
 }

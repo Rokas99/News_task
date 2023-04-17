@@ -20,39 +20,37 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:flow_verticalBias="0.5">
 
     </ImageView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <TextView
+        android:id="@+id/single_article_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/single_article_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/single_article_image"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0">
 
-        <TextView
-            android:id="@+id/single_article_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            app:layout_constraintTop_toTopOf="parent">
+    </TextView>
 
-        </TextView>
+    <TextView
+        android:id="@+id/single_article_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline">
 
-        <TextView
-            android:id="@+id/single_article_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/single_article_title">
-
-        </TextView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </TextView>
 </androidx.constraintlayout.widget.ConstraintLayout>

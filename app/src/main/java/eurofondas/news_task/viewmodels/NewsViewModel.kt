@@ -13,19 +13,20 @@ import kotlinx.coroutines.launch
 
 class NewsViewModel(val articleDatabase : ArticleDatabase) : ViewModel() {
 
-    var newsResultMutableData: MutableLiveData<GetNewsResponse> = MutableLiveData()
-    var savedResultMutableData: MutableLiveData<List<Article>> = MutableLiveData()
+    private var newsResultMutableData: MutableLiveData<GetNewsResponse> = MutableLiveData()
+    private var savedResultMutableData: MutableLiveData<List<Article>> = MutableLiveData()
+    private var errorsResultMutableData: MutableLiveData<String> = MutableLiveData()
 
     fun getNews() {
         viewModelScope.launch {
             NewsRepository().getNews(object : NewsRepository.INewsResponse {
 
-                override fun OnResponse(getNewsResponse: GetNewsResponse?) {
+                override fun onResponse(getNewsResponse: GetNewsResponse?) {
                     newsResultMutableData.postValue(getNewsResponse)
                 }
 
-                override fun OnFailure(t: Throwable) {
-                    Log.d("FAILURE", t.toString())
+                override fun onFailure(t: Throwable) {
+                    errorsResultMutableData.postValue(t.message)
                 }
 
             })
@@ -38,6 +39,10 @@ class NewsViewModel(val articleDatabase : ArticleDatabase) : ViewModel() {
 
     fun getSavedArticlesResult(): LiveData<List<Article>> {
         return savedResultMutableData
+    }
+
+    fun getErrorsResult(): LiveData<String> {
+        return errorsResultMutableData
     }
 
     fun insertArticle(article: Article)

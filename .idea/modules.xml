@@ -3,13 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/News_task.iml" filepath="$PROJECT_DIR$/.idea/modules/News_task.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/News_task.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/News_task.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/News_task.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/News_task.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/News_task.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/News_task.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/News_task.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/News_task.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/News_task.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/News_task.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/News_task.main.iml" filepath="$PROJECT_DIR$/.idea/modules/News_task.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/News_task.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/News_task.unitTest.iml" />
     </modules>
   </component>
 </project>
