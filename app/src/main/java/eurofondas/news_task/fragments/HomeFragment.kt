@@ -7,23 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import eurofondas.news_task.R
-import eurofondas.news_task.activities.MainActivity
 import eurofondas.news_task.adapters.NewsAdapter
 import eurofondas.news_task.connection.NetworkConnectionLiveData
-import eurofondas.news_task.db.ArticleDatabase
 import eurofondas.news_task.decoration.SpaceItemDecoration
-import eurofondas.news_task.viewmodels.ArticleViewModelFactory
 import eurofondas.news_task.viewmodels.NewsViewModel
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
+    private val newsViewModel: NewsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,49 +31,40 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val recyclerView: RecyclerView = view.findViewById(R.id.fragment_home_recyclerView)
 
-        val mainActivity = activity as MainActivity
-
-        val recyclerView : RecyclerView = mainActivity.findViewById(R.id.fragment_home_recyclerView)
-
-        val linearLayoutManager = LinearLayoutManager(mainActivity)
+        val linearLayoutManager = LinearLayoutManager(requireActivity())
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.addItemDecoration(SpaceItemDecoration(30, 10))
 
-        val articleDatabase = ArticleDatabase.getInstance(mainActivity)
-        val viewModelFactory = ArticleViewModelFactory(articleDatabase)
-        val newsViewModel = ViewModelProvider(mainActivity, viewModelFactory)[NewsViewModel::class.java]
-
-        val networkLiveData = NetworkConnectionLiveData(mainActivity)
+        val networkLiveData = NetworkConnectionLiveData(requireContext())
 
         networkLiveData.observe(viewLifecycleOwner) { isConnected ->
             if (isConnected) {
                 Log.d("Available", "Available")
                 newsViewModel.getNews()
             } else {
-                Toasty.error(mainActivity, "Network error", Toast.LENGTH_LONG, true).show()
+                Toasty.error(requireContext(), "Network error", Toast.LENGTH_LONG, true).show()
             }
         }
 
-
-        newsViewModel.getNewsResult().observe(mainActivity
+        newsViewModel.getNewsResult().observe(viewLifecycleOwner
         ) {
-            if(it != null)
-            {
+            if (it != null) {
                 val articles = it.articles
-                val adapter = NewsAdapter(articles, mainActivity, true)
+                val adapter = NewsAdapter(articles, requireActivity(), true)
                 recyclerView.adapter = adapter
             }
         }
 
-        newsViewModel.getErrorsResult().observe(mainActivity) {
-            if(it != null)
-            {
-                Toasty.error(mainActivity, it, Toast.LENGTH_LONG, true).show()
+        newsViewModel.getErrorsResult().observe(viewLifecycleOwner) {
+            if (it != null) {
+                Toasty.error(requireContext(), it, Toast.LENGTH_LONG, true).show()
             }
         }
     }
 }
+
 
 

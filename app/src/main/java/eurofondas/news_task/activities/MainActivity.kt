@@ -2,13 +2,16 @@ package eurofondas.news_task.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import eurofondas.news_task.R
 import eurofondas.news_task.fragments.HomeFragment
 import eurofondas.news_task.fragments.SavedFragment
+import eurofondas.news_task.viewmodels.NewsViewModel
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

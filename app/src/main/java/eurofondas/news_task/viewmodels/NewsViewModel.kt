@@ -5,21 +5,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import eurofondas.news_task.db.ArticleDatabase
 import eurofondas.news_task.models.Article
 import eurofondas.news_task.models.GetNewsResponse
 import eurofondas.news_task.repositories.NewsRepository
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NewsViewModel(val articleDatabase : ArticleDatabase) : ViewModel() {
+@HiltViewModel
+class NewsViewModel @Inject constructor(private val articleDatabase : ArticleDatabase,
+                                        private val newsRepository: NewsRepository) : ViewModel() {
 
-    private var newsResultMutableData: MutableLiveData<GetNewsResponse> = MutableLiveData()
+    private var newsResultMutableData: MutableLiveData<GetNewsResponse?> = MutableLiveData()
     private var savedResultMutableData: MutableLiveData<List<Article>> = MutableLiveData()
     private var errorsResultMutableData: MutableLiveData<String> = MutableLiveData()
 
     fun getNews() {
         viewModelScope.launch {
-            NewsRepository().getNews(object : NewsRepository.INewsResponse {
+            newsRepository.getNews(object : NewsRepository.INewsResponse {
 
                 override fun onResponse(getNewsResponse: GetNewsResponse?) {
                     newsResultMutableData.postValue(getNewsResponse)
@@ -33,7 +38,7 @@ class NewsViewModel(val articleDatabase : ArticleDatabase) : ViewModel() {
         }
     }
 
-    fun getNewsResult(): LiveData<GetNewsResponse> {
+    fun getNewsResult(): MutableLiveData<GetNewsResponse?> {
         return newsResultMutableData
     }
 
@@ -47,16 +52,19 @@ class NewsViewModel(val articleDatabase : ArticleDatabase) : ViewModel() {
 
     fun insertArticle(article: Article)
     {
-        Log.d("ARTICLE", "CALLED")
-        viewModelScope.launch {
-            articleDatabase.roomDao().InsertArticle(article)
+        viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
+
+            errorsResultMutableData.postValue("Failed to save article")
+        }) {
+            articleDatabase.articleDao().InsertArticle(article)
         }
+
     }
 
     fun getSavedNews()
     {
         viewModelScope.launch { 
-            savedResultMutableData.postValue(articleDatabase.roomDao().getArticles())
+            savedResultMutableData.postValue(articleDatabase.articleDao().getArticles())
         }
     }
 }

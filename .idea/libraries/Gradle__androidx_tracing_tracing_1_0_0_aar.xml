@@ -4,9 +4,10 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5b87d3a5c23a3888cf91c6e6e1911d15/transformed/tracing-1.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/86775c7779e185750cb58b8ab528af65/transformed/tracing-1.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5a0bac5871cfc3e3c77d2ab22c448f59/transformed/tracing-1.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/efb3e01719cb0f2a5a2c2a17c2fc7ba6/transformed/tracing-1.0.0/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/efb3e01719cb0f2a5a2c2a17c2fc7ba6/transformed/tracing-1.0.0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/efb3e01719cb0f2a5a2c2a17c2fc7ba6/transformed/tracing-1.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/56e1e3c3a9e9a56cf6363effa37b31e9/transformed/tracing-1.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/56e1e3c3a9e9a56cf6363effa37b31e9/transformed/tracing-1.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/56e1e3c3a9e9a56cf6363effa37b31e9/transformed/tracing-1.0.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

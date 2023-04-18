@@ -9,19 +9,20 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import coil.load
+import dagger.hilt.android.AndroidEntryPoint
+import es.dmoral.toasty.Toasty
 import eurofondas.news_task.R
-import eurofondas.news_task.db.ArticleDatabase
 import eurofondas.news_task.logic.Logic
 import eurofondas.news_task.models.Article
-import eurofondas.news_task.viewmodels.ArticleViewModelFactory
 import eurofondas.news_task.viewmodels.NewsViewModel
-import java.time.Duration
 
-
+@AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
+    private val newsViewModel : NewsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
@@ -42,10 +43,6 @@ class DetailsActivity : AppCompatActivity() {
         back.setOnClickListener() {
             finish()
         }
-
-        val articleDatabase = ArticleDatabase.getInstance(this)
-        val viewModelFactory = ArticleViewModelFactory(articleDatabase)
-        val newsViewModel = ViewModelProvider(this, viewModelFactory)[NewsViewModel::class.java]
 
         save.setOnClickListener() {
             if (article != null) {
@@ -70,6 +67,11 @@ class DetailsActivity : AppCompatActivity() {
             }
         }
 
+        newsViewModel.getErrorsResult().observe(this) {
+            if (it != null) {
+                Toasty.error(this, it, Toast.LENGTH_LONG, true).show()
+            }
+        }
     }
 
     inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? = when {

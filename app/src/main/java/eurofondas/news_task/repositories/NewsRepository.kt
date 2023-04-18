@@ -5,37 +5,25 @@ import eurofondas.news_task.models.GetNewsResponse
 import eurofondas.news_task.retrofit.Connection
 import eurofondas.news_task.retrofit.NewsService
 import java.io.IOException
+import javax.inject.Inject
 
-class NewsRepository {
+class NewsRepository @Inject constructor(private val newsService: NewsService) {
 
     suspend fun getNews(newsResponse: INewsResponse) {
-        val newsService: NewsService?
-
-        try {
-            newsService = Connection.getRetrofit()?.create(NewsService::class.java)
-        } catch (exception: IOException) {
-            Log.d("FAILED", exception.message.toString())
-            newsResponse.onFailure(Throwable("Connection error"))
-            return
-        }
 
         val request = try {
-            newsService?.getNews()
+            newsService.getNews()
         } catch (exception: IOException) {
             Log.d("FAILED", exception.message.toString())
             newsResponse.onFailure(Throwable("Connection error"))
             return
         }
 
-        if (request != null) {
-            if (request.isSuccessful) {
-                newsResponse.onResponse(request.body())
-            } else {
-                Log.d("FAILED", request.message() ?: "")
-                newsResponse.onFailure(Throwable(request.message()))
-            }
+        if (request.isSuccessful) {
+            newsResponse.onResponse(request.body())
         } else {
-            newsResponse.onFailure(Throwable("Request is empty"))
+            Log.d("FAILED", request.message() ?: "")
+            newsResponse.onFailure(Throwable(request.message()))
         }
     }
 
